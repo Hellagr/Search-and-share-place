@@ -5,13 +5,32 @@ const addressInput = document.getElementById('address')! as HTMLInputElement;
 
 const MICROSOFT_API_KEY = 'Aic08I13b00KYBf4vx6NjXboo-Nq9Q8UqHXsbj8DAIRR91oDdWLe0ZnvJEzuELGk';
 
+// declare var Microsoft: any;
+
+type BingResponse = 
+    {
+        resourceSets: { resources: { geocodePoints:{ coordinates:{} []}[] }[] }[]
+    };
+;
+
 function searchAdressHandler(event: Event) {
     event.preventDefault();
     const enteredAdress = addressInput.value;
 
-    axios.get(`http://dev.virtualearth.net/REST/v1/Locations?countryRegion=${encodeURI(enteredAdress)}&key=${MICROSOFT_API_KEY}`)
+    axios.get<BingResponse>(`
+    http://dev.virtualearth.net/REST/v1/Locations/${enteredAdress}?key=${MICROSOFT_API_KEY}`)
         .then(response => {
-    console.log(response);
+
+            const coordinates = response.data.resourceSets[0].resources[0].geocodePoints[0].coordinates;
+
+            console.log(response)
+
+            new Microsoft.Maps.Map('#map', {
+                credentials: MICROSOFT_API_KEY,
+                center: new Microsoft.Maps.Location(coordinates[0],coordinates[1]),
+                zoom: 10
+            })
+        
         })
         .catch(err => {
             console.log(err);
