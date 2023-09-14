@@ -5,8 +5,6 @@ const addressInput = document.getElementById('address')! as HTMLInputElement;
 
 const MICROSOFT_API_KEY = 'Aic08I13b00KYBf4vx6NjXboo-Nq9Q8UqHXsbj8DAIRR91oDdWLe0ZnvJEzuELGk';
 
-// declare var Microsoft: any;
-
 type BingResponse = 
     {
         resourceSets: { resources: { geocodePoints:{ coordinates:{} []}[] }[] }[]
